@@ -1,0 +1,10 @@
+@page "/Auth"
+@inject NavigationManager NavigationManager
+
+@code {
+   // redirect to home page
+    protected override void OnInitialized()
+    {
+        NavigationManager.NavigateTo("/");
+    } 
+}

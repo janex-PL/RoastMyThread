@@ -1,0 +1,33 @@
+﻿@page "/"
+@using System.Net
+@using System.Text.Encodings.Web
+@using Microsoft.Extensions.Options
+@inject IOptions<ThreadsConfiguration> ThreadsConfiguration;
+
+<PageTitle>Roast my Thread!</PageTitle>
+
+<MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+    <MudText Typo="Typo.h2" Align="Align.Center">Roast my Thread!</MudText>
+    <MudPaper Class="pa-10 mt-10"  Elevation="6">
+        <MudGrid Justify="Justify.Center" >
+            <MudItem xs="12">
+                <MudText Align="Align.Center" Typo="Typo.h6">We need to access your Threads profile in order to get the bio and latest posts.</MudText>
+            </MudItem>
+            <MudItem xs="6"  md="4">
+                <MudButton Color="Color.Primary" FullWidth="true" Variant="Variant.Filled" Href="@AuthorizationUrl" EndIcon="@Icons.Material.Filled.Lock">Allow access</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudStack>
+
+@code
+{
+    public string AuthorizationUrl { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        AuthorizationUrl = $"https://threads.net/oauth/authorize?client_id={ThreadsConfiguration.Value.AppId}&redirect_uri={WebUtility.UrlEncode(ThreadsConfiguration.Value.RedirectUri)}&scope=threads_basic&response_type=code";
+        
+        return base.OnInitializedAsync();
+    }
+}
